@@ -1,42 +1,59 @@
-// Funcion para generar numero al azar entre 1 y 100
-function numeroRandom() {
-  return Math.ceil(Math.random() * 100) + 1;
+let playAgain = true;
+let correctNumber = generateRandomNumber();
+
+function generateRandomNumber() {
+  return Math.ceil(Math.random() * 9) + 1; // Generar número random entre 1 y 10
 }
 
-// Funcion para jugar
 function playGame() {
-  let RANDOM_NUMBER = numeroRandom();
-  let playAgain = true;
-
-  // Loop para seguir jugando
-  while (playAgain) {
-    const USER_GUESS = parseInt(
-      prompt("Enter your guess (between 1 and 100):")
-    );
-
-    // Si es una entrada invalida - Adivinaste - Sigue intentando
-    if (isNaN(USER_GUESS) || USER_GUESS < 1 || USER_GUESS > 100) {
-      //document.write("Please enter a valid number between 1 and 100.");
-      console.log("Please enter a valid number between 1 and 100.");
-    } else if (USER_GUESS === RANDOM_NUMBER) {
-      //document.write("Congratulations! You guessed the correct number!");
-      console.log("Congratulations! You guessed the correct number!");
-      playAgain = confirm("Do you want to play again?");
-      if (playAgain) {
-        RANDOM_NUMBER = numeroRandom();
-      }
-    } else if (USER_GUESS < RANDOM_NUMBER) {
-      //document.write("Try a higher number.");
-      console.log("Try a higher number.");
-    } else {
-      //document.write("Try a lower number.");
-      console.log("Try a lower number.");
-    }
+  // No mostrar si es falso
+  if (!playAgain) {
+    return;
   }
 
-  //document.write("Thanks for playing!");
-  console.log("Thanks for playing!");
+  let guessedNumber = parseInt(prompt("Enter your guess (between 1 and 10)"));
+
+  console.log(
+    "Random Number was: " +
+      correctNumber +
+      " ---- You guessed: " +
+      guessedNumber
+  );
+
+  // Si es una entrada invalida
+  if (isNaN(guessedNumber) || guessedNumber < 1 || guessedNumber > 10) {
+    console.log("Please enter a valid number between 1 and 10!");
+    window.confirm("Please enter a valid number between 1 and 10!");
+    playAgain = true;
+    // Si es una entrada correcta
+  } else if (guessedNumber === correctNumber) {
+    console.log("Congratulations! You guessed the correct number!");
+    if (
+      window.confirm(
+        "Congratulations! You guessed the correct number. Would you like to play again?"
+      )
+    ) {
+      correctNumber = generateRandomNumber(); // Generar un nuevo correctNumber para el proximo round
+      guessedNumber = undefined; // Para resetear cada vez que empiezo un round
+      playAgain = true;
+    } else {
+      playAgain = false;
+    }
+    // Si es una entrda NO correcta
+  } else if (guessedNumber < correctNumber) {
+    console.log("Please try a higher number. Try Again!");
+    window.confirm("Please try a higher number. Try Again!");
+    playAgain = true;
+  } else {
+    console.log("Please try a lower number. Try Again!");
+    window.confirm("Please try a lower number. Try Again!");
+    playAgain = true;
+  }
+
+  playGame(); // Correr playGame una y otra vez
 }
 
-// Llamando a la función para jugar
-playGame();
+// Si quieres que sea sin el botón, descomenta esto y borra el botón en el html
+document.addEventListener("DOMContentLoaded", function () {
+  playGame();
+});
