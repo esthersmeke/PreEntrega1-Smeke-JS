@@ -53,7 +53,7 @@ function playGame() {
   playGame(); // Correr playGame una y otra vez
 }
 
-// Si quieres que sea sin el botón, descomenta esto y borra el botón en el html
+// Para que el HTML se loadee primero antes que el juego
 document.addEventListener("DOMContentLoaded", function () {
   playGame();
 });
